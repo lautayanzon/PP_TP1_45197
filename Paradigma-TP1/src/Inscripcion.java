@@ -4,10 +4,12 @@ public class Inscripcion {
 
     private LocalDate fecha;
     private String estado;
+    private Estudiante estudiante;
 
-    public Inscripcion(LocalDate fecha, String estado) {
+    public Inscripcion(LocalDate fecha, String estado, Estudiante estudiante) {
         this.fecha = fecha;
         this.estado = estado;
+        this.estudiante = estudiante;
     }
 
     public LocalDate getFecha() {
@@ -31,6 +33,7 @@ public class Inscripcion {
         return "Inscripcion{" +
                 "fecha=" + fecha +
                 ", estado='" + estado + '\'' +
+                ", estudiante=" + estudiante +
                 '}';
     }
 }

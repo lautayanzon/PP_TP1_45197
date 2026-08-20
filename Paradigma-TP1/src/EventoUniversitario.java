@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class EventoUniversitario {
 
     private final String id;
@@ -7,16 +9,29 @@ public class EventoUniversitario {
     private static int cantidadEventos = 0;
 
     Sala sala;
+    Actividad actividad;
 
-    public EventoUniversitario(String id, String titulo, double costoBase, boolean gratuito) {
+    public EventoUniversitario(String id, String titulo, double costoBase) {
         this.id = id;
         this.titulo = titulo;
-        this.costoBase = costoBase;
-        this.gratuito = gratuito;
+        if (costoBase > 0) {
+            this.costoBase = costoBase;
+            this.gratuito = false;
+        }
         cantidadEventos++;
     }
 
-    public EventoUniversitario (EventoUniversitario otro) {
+    public EventoUniversitario(String id, String titulo, boolean gratuito) {
+        this.id = id;
+        this.titulo = titulo;
+        this.gratuito = gratuito;
+        if (gratuito) {
+            this.costoBase = 0;
+        }
+        cantidadEventos++;
+    }
+
+    public EventoUniversitario(EventoUniversitario otro) {
         this.id = otro.id;
         this.titulo = otro.titulo;
         this.costoBase = otro.costoBase;
@@ -24,16 +39,20 @@ public class EventoUniversitario {
         cantidadEventos++;
     }
 
-    double calcularCostoEstimado () {
+    double calcularCostoEstimado() {
         return 0;
     }
 
-    void asignarSala (int id, String nombre) {
+    void asignarSala(int id, String nombre) {
         this.sala = new Sala(id, nombre);
     }
 
-    void crearActividad (int id, String titulo, int cupo) {
-        Actividad actividad = new Actividad(1, 1, titulo, id);
+    void crearActividad(int id, String titulo, int cupo) {
+        this.actividad = new Actividad(id, titulo, cupo);
+    }
+
+    public Actividad getActividad() {
+        return actividad;
     }
 
     void mostrarDatos() {
@@ -41,6 +60,8 @@ public class EventoUniversitario {
         System.out.println("Titulo: " + this.titulo);
         System.out.println("Costo Base: " + this.costoBase);
         System.out.println("Es gratuito? " + this.gratuito);
+        System.out.println("Que sala tiene asignada? " + this.sala);
+        System.out.println(this.actividad);
     }
 
     public static int getCantidadEventos() {
