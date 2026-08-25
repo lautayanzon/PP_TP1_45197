@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventoUniversitario {
@@ -9,7 +10,7 @@ public class EventoUniversitario {
     private static int cantidadEventos = 0;
 
     Sala sala;
-    Actividad actividad;
+    List<Actividad> actividades = new ArrayList<>();
 
     public EventoUniversitario(String id, String titulo, double costoBase) {
         this.id = id;
@@ -40,28 +41,48 @@ public class EventoUniversitario {
     }
 
     double calcularCostoEstimado() {
-        return 0;
+        if (this.gratuito) {
+            return 0;
+        } else {
+            double sumaTotalActividades = 0;
+            for (Actividad actividad : actividades) {
+                sumaTotalActividades += actividad.calcularCostoMateriales();
+            }
+            return (this.costoBase + sumaTotalActividades) * 1.21;
+        }
     }
 
-    void asignarSala(int id, String nombre) {
-        this.sala = new Sala(id, nombre);
+    void asignarSala(Sala sala) {
+        this.sala = sala;
     }
 
-    void crearActividad(int id, String titulo, int cupo) {
-        this.actividad = new Actividad(id, titulo, cupo);
+    void crearActividad(int id, String titulo, int cupo, String tipo) {
+        switch (tipo) {
+            case "Taller":
+                this.actividades.add(new Taller(id, titulo, cupo, false));
+                break;
+            case "Charla":
+                this.actividades.add(new Charla(id, titulo, cupo, "Manuel"));
+                break;
+        }
     }
 
-    public Actividad getActividad() {
-        return actividad;
+    public List<Actividad> getActividad() {
+        return actividades;
     }
 
     void mostrarDatos() {
+        System.out.println("------------");
         System.out.println("Evento " + this.id);
         System.out.println("Titulo: " + this.titulo);
         System.out.println("Costo Base: " + this.costoBase);
         System.out.println("Es gratuito? " + this.gratuito);
-        System.out.println("Que sala tiene asignada? " + this.sala);
-        System.out.println(this.actividad);
+        System.out.print("Que sala tiene asignada? ");
+        this.sala.mostrarDatos();
+        System.out.println("Costo estimado: " + this.calcularCostoEstimado());
+        for (Actividad actividad : this.actividades) {
+            actividad.mostrarInscripciones();
+        }
     }
 
     public static int getCantidadEventos() {

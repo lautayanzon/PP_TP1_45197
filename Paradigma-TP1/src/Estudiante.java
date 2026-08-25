@@ -31,4 +31,12 @@ public class Estudiante {
                 ", nombre='" + nombre + '\'' +
                 '}';
     }
+
+    void mostrarDatos() {
+        System.out.println("Estudiante");
+        System.out.println("[");
+        System.out.println("Legajo: " + this.legajo);
+        System.out.println("Nombre: " + this.nombre);
+        System.out.println("]");
+    }
 }

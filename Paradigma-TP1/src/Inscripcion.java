@@ -5,11 +5,13 @@ public class Inscripcion {
     private LocalDate fecha;
     private String estado;
     private Estudiante estudiante;
+    private Actividad actividad;
 
-    public Inscripcion(LocalDate fecha, String estado, Estudiante estudiante) {
+    public Inscripcion(LocalDate fecha, String estado, Estudiante estudiante, Actividad actividad) {
         this.fecha = fecha;
         this.estado = estado;
         this.estudiante = estudiante;
+        this.actividad = actividad;
     }
 
     public LocalDate getFecha() {
@@ -28,12 +30,13 @@ public class Inscripcion {
         this.estado = estado;
     }
 
-    @Override
-    public String toString() {
-        return "Inscripcion{" +
-                "fecha=" + fecha +
-                ", estado='" + estado + '\'' +
-                ", estudiante=" + estudiante +
-                '}';
+    void mostrarDatos () {
+        System.out.println("[");
+        System.out.println("Fecha:" + this.fecha);
+        System.out.println("Estado:" + this.estado);
+        System.out.println(this.actividad);
+        this.actividad.mostrarIdentificacion();
+        System.out.println(this.estudiante);
+        System.out.println("]");
     }
 }

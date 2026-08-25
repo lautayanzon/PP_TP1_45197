@@ -31,4 +31,8 @@ public class Sala {
                 ", nombre='" + nombre + '\'' +
                 '}';
     }
+
+    void mostrarDatos() {
+        System.out.println(this.nombre);
+    }
 }
