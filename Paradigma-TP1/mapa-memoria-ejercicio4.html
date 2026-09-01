@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa de memoria — Ejercicio 4 — App.main()</title>
+  <style>
+    @page { size: A3 landscape; margin: 10mm; }
+    html, body { margin: 0; padding: 0; background: #fff; }
+    body { font-family: "Segoe UI", Calibri, Arial, sans-serif; }
+    .page {
+      width: 1680px;
+      margin: 12px auto 24px;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 0 0 4px;
+      color: #1a2332;
+    }
+    .sub {
+      font-size: 12px;
+      color: #445;
+      margin: 0 0 10px;
+    }
+    @media print {
+      .page { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Mapa de memoria de ejecución — <code>App.main()</code></h1>
+    <p class="sub">Paradigmas de Programación · Ejercicio 4 · Estado al finalizar el método <code>main</code> (todos los objetos siguen alcanzables)</p>
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1080" width="1680" height="1080">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155" />
+        </marker>
+        <marker id="arrow-agg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d" />
+        </marker>
+        <marker id="arrow-comp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#9f1239" />
+        </marker>
+        <marker id="arrow-asoc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#1d4ed8" />
+        </marker>
+        <marker id="diamond-empty" viewBox="0 0 14 14" refX="1" refY="7" markerWidth="11" markerHeight="11" orient="auto">
+          <path d="M 7 1 L 13 7 L 7 13 L 1 7 z" fill="#fff" stroke="#15803d" stroke-width="1.4" />
+        </marker>
+        <marker id="diamond-filled" viewBox="0 0 14 14" refX="1" refY="7" markerWidth="11" markerHeight="11" orient="auto">
+          <path d="M 7 1 L 13 7 L 7 13 L 1 7 z" fill="#9f1239" stroke="#9f1239" stroke-width="1" />
+        </marker>
+      </defs>
+
+      <!-- STACK -->
+      <rect x="8" y="8" width="292" height="1064" rx="8" fill="#fff7d6" stroke="#b45309" stroke-width="2" />
+      <rect x="8" y="8" width="292" height="52" rx="8" fill="#f59e0b" />
+      <rect x="8" y="36" width="292" height="24" fill="#f59e0b" />
+      <text x="154" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#1c1917">STACK</text>
+      <text x="154" y="70" text-anchor="middle" font-size="11" fill="#78350f">Variables locales de main()</text>
+
+      <text x="24" y="108" font-size="11" fill="#78350f">Solo referencias a objetos</text>
+      <text x="24" y="123" font-size="11" fill="#78350f">(no se copian los objetos aquí)</text>
+
+      <!-- var estudiantes -->
+      <rect x="24" y="145" width="260" height="86" rx="6" fill="#fff" stroke="#92400e" stroke-width="1.5" />
+      <text x="36" y="168" font-size="12" font-weight="700" fill="#1c1917">estudiantes</text>
+      <text x="36" y="186" font-size="10" fill="#57534e">List&lt;Estudiante&gt;</text>
+      <circle cx="252" cy="188" r="7" fill="#334155" />
+      <text x="36" y="216" font-size="10" fill="#78716c">referencia → ArrayList en heap</text>
+
+      <!-- var evento1 -->
+      <rect x="24" y="255" width="260" height="86" rx="6" fill="#fff" stroke="#92400e" stroke-width="1.5" />
+      <text x="36" y="278" font-size="12" font-weight="700" fill="#1c1917">evento1</text>
+      <text x="36" y="296" font-size="10" fill="#57534e">EventoUniversitario</text>
+      <circle cx="252" cy="298" r="7" fill="#334155" />
+      <text x="36" y="326" font-size="10" fill="#78716c">referencia → evento en heap</text>
+
+      <!-- var sala1 -->
+      <rect x="24" y="365" width="260" height="86" rx="6" fill="#fff" stroke="#92400e" stroke-width="1.5" />
+      <text x="36" y="388" font-size="12" font-weight="700" fill="#1c1917">sala1</text>
+      <text x="36" y="406" font-size="10" fill="#57534e">Sala</text>
+      <circle cx="252" cy="408" r="7" fill="#334155" />
+      <text x="36" y="436" font-size="10" fill="#78716c">referencia → misma Sala del evento</text>
+
+      <rect x="24" y="480" width="260" height="170" rx="6" fill="#fffbeb" stroke="#d97706" stroke-dasharray="4 3" />
+      <text x="36" y="504" font-size="11" font-weight="700" fill="#92400e">No hay variables locales para:</text>
+      <text x="36" y="526" font-size="11" fill="#444">• Charla / Taller</text>
+      <text x="36" y="544" font-size="11" fill="#444">• Inscripcion</text>
+      <text x="36" y="562" font-size="11" fill="#444">• los ArrayList internos</text>
+      <text x="36" y="588" font-size="10" fill="#78716c">Se alcanzan solo a través de</text>
+      <text x="36" y="604" font-size="10" fill="#78716c">evento1 (y estudiantes).</text>
+      <text x="36" y="632" font-size="10" fill="#78716c">Eso evidencia composición</text>
+      <text x="36" y="648" font-size="10" fill="#78716c">de las actividades.</text>
+
+      <rect x="24" y="670" width="260" height="380" rx="6" fill="#fff" stroke="#d97706" />
+      <text x="36" y="694" font-size="12" font-weight="700" fill="#92400e">Cómo leer el mapa</text>
+      <text x="36" y="718" font-size="11" fill="#1c1917">STACK = nombres del main</text>
+      <text x="36" y="734" font-size="11" fill="#1c1917">(referencias / puntas).</text>
+      <text x="36" y="758" font-size="11" fill="#1c1917">HEAP = objetos reales</text>
+      <text x="36" y="774" font-size="11" fill="#1c1917">creados con new.</text>
+      <text x="36" y="800" font-size="11" fill="#1c1917">Varias flechas al mismo</text>
+      <text x="36" y="816" font-size="11" fill="#1c1917">rectángulo = alias</text>
+      <text x="36" y="832" font-size="11" fill="#1c1917">(misma instancia).</text>
+      <text x="36" y="858" font-size="11" fill="#1c1917">Charla y Taller son UN</text>
+      <text x="36" y="874" font-size="11" fill="#1c1917">objeto cada uno: incluyen</text>
+      <text x="36" y="890" font-size="11" fill="#1c1917">la parte Actividad + la</text>
+      <text x="36" y="906" font-size="11" fill="#1c1917">parte de la subclase.</text>
+      <text x="36" y="932" font-size="11" fill="#1c1917">Al terminar main, si no</text>
+      <text x="36" y="948" font-size="11" fill="#1c1917">queda ninguna referencia,</text>
+      <text x="36" y="964" font-size="11" fill="#1c1917">los objetos dejan de estar</text>
+      <text x="36" y="980" font-size="11" fill="#1c1917">accesibles (GC). Aquí</text>
+      <text x="36" y="996" font-size="11" fill="#1c1917">todavía están vivos.</text>
+      <text x="36" y="1024" font-size="10" fill="#78716c">Fuente: App.java (Ejercicio 3)</text>
+
+      <!-- HEAP -->
+      <rect x="312" y="8" width="1360" height="1064" rx="8" fill="#eef4fb" stroke="#1e3a5f" stroke-width="2" />
+      <rect x="312" y="8" width="1360" height="52" rx="8" fill="#1e3a5f" />
+      <rect x="312" y="36" width="1360" height="24" fill="#1e3a5f" />
+      <text x="992" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">HEAP — objetos construidos en memoria</text>
+      <text x="992" y="70" text-anchor="middle" font-size="11" fill="#dbeafe">Cada rectángulo = una instancia. Las flechas = referencias (campos o elementos de colección).</text>
+
+      <!-- ArrayList estudiantes -->
+      <rect x="328" y="92" width="200" height="148" rx="6" fill="#fff" stroke="#334155" stroke-width="1.5" />
+      <rect x="328" y="92" width="200" height="28" rx="6" fill="#334155" />
+      <rect x="328" y="108" width="200" height="12" fill="#334155" />
+      <text x="428" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">ArrayList</text>
+      <text x="340" y="136" font-size="10" fill="#64748b">@listEst  ·  size = 3</text>
+      <text x="340" y="158" font-size="11" fill="#0f172a">[0]</text>
+      <circle cx="500" cy="154" r="5" fill="#334155" />
+      <text x="340" y="182" font-size="11" fill="#0f172a">[1]</text>
+      <circle cx="500" cy="178" r="5" fill="#334155" />
+      <text x="340" y="206" font-size="11" fill="#0f172a">[2]</text>
+      <circle cx="500" cy="202" r="5" fill="#334155" />
+      <text x="340" y="228" font-size="9" fill="#64748b">colección de estudiantes</text>
+
+      <!-- Estudiantes -->
+      <rect x="560" y="92" width="188" height="148" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="1.5" />
+      <rect x="560" y="92" width="188" height="28" fill="#047857" rx="6" />
+      <rect x="560" y="108" width="188" height="12" fill="#047857" />
+      <text x="654" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Estudiante  @est1</text>
+      <text x="572" y="140" font-size="11" fill="#064e3b">legajo = "111"</text>
+      <text x="572" y="158" font-size="11" fill="#064e3b">nombre = "Juan P."</text>
+      <text x="572" y="186" font-size="10" fill="#047857">sin lista de inscripciones</text>
+      <text x="572" y="202" font-size="10" fill="#047857">(asociación desde Inscripcion)</text>
+      <text x="572" y="224" font-size="10" fill="#065f46">inscripto en Charla</text>
+
+      <rect x="768" y="92" width="188" height="148" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="1.5" />
+      <rect x="768" y="92" width="188" height="28" fill="#047857" rx="6" />
+      <rect x="768" y="108" width="188" height="12" fill="#047857" />
+      <text x="862" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Estudiante  @est2</text>
+      <text x="780" y="140" font-size="11" fill="#064e3b">legajo = "222"</text>
+      <text x="780" y="158" font-size="11" fill="#064e3b">nombre = "Pedro M."</text>
+      <text x="780" y="186" font-size="10" fill="#047857">compartido por 2</text>
+      <text x="780" y="202" font-size="10" fill="#047857">inscripciones distintas</text>
+      <text x="780" y="224" font-size="10" fill="#065f46">Charla + Taller</text>
+
+      <rect x="976" y="92" width="188" height="148" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="1.5" />
+      <rect x="976" y="92" width="188" height="28" fill="#047857" rx="6" />
+      <rect x="976" y="108" width="188" height="12" fill="#047857" />
+      <text x="1070" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Estudiante  @est3</text>
+      <text x="988" y="140" font-size="11" fill="#064e3b">legajo = "333"</text>
+      <text x="988" y="158" font-size="11" fill="#064e3b">nombre = "Miguel A."</text>
+      <text x="988" y="186" font-size="10" fill="#047857">no hay variable local</text>
+      <text x="988" y="202" font-size="10" fill="#047857">individual en main</text>
+      <text x="988" y="224" font-size="10" fill="#065f46">inscripto en Taller</text>
+
+      <!-- Evento -->
+      <rect x="328" y="268" width="268" height="196" rx="6" fill="#fff" stroke="#1e3a5f" stroke-width="2" />
+      <rect x="328" y="268" width="268" height="30" fill="#1e3a5f" rx="6" />
+      <rect x="328" y="286" width="268" height="12" fill="#1e3a5f" />
+      <text x="462" y="288" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">EventoUniversitario  @ev1</text>
+      <text x="340" y="318" font-size="11" fill="#0f172a">id = "1"</text>
+      <text x="340" y="336" font-size="11" fill="#0f172a">titulo = "Evento Universitario"</text>
+      <text x="340" y="354" font-size="11" fill="#0f172a">costoBase = 25000</text>
+      <text x="340" y="372" font-size="11" fill="#0f172a">gratuito = false</text>
+      <text x="340" y="398" font-size="11" fill="#0f172a">sala</text>
+      <circle cx="568" cy="394" r="5" fill="#15803d" />
+      <text x="340" y="424" font-size="11" fill="#0f172a">actividades</text>
+      <circle cx="568" cy="420" r="5" fill="#9f1239" />
+      <text x="340" y="450" font-size="9" fill="#64748b">cantidadEventos (static) = 1  ·  no está en el objeto</text>
+
+      <!-- Sala -->
+      <rect x="720" y="280" width="230" height="168" rx="6" fill="#f0fdf4" stroke="#15803d" stroke-width="2" stroke-dasharray="7 4" />
+      <rect x="720" y="280" width="230" height="30" fill="#15803d" rx="6" />
+      <rect x="720" y="298" width="230" height="12" fill="#15803d" />
+      <text x="835" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Sala  @sala</text>
+      <text x="732" y="332" font-size="11" fill="#14532d">id = 1</text>
+      <text x="732" y="350" font-size="11" fill="#14532d">nombre = "Sala Zoom"</text>
+      <text x="732" y="380" font-size="10" font-weight="700" fill="#15803d">AGREGACIÓN</text>
+      <text x="732" y="398" font-size="10" fill="#166534">La sala existe sola: tiene</text>
+      <text x="732" y="414" font-size="10" fill="#166534">variable local sala1 y el</text>
+      <text x="732" y="430" font-size="10" fill="#166534">evento solo la referencia.</text>
+      <text x="732" y="446" font-size="10" fill="#166534">Si se borra el evento, la sala sigue.</text>
+
+      <!-- ArrayList actividades -->
+      <rect x="328" y="492" width="200" height="128" rx="6" fill="#fff1f2" stroke="#9f1239" stroke-width="1.5" />
+      <rect x="328" y="492" width="200" height="26" fill="#9f1239" rx="6" />
+      <rect x="328" y="506" width="200" height="12" fill="#9f1239" />
+      <text x="428" y="510" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">ArrayList  @listAct</text>
+      <text x="340" y="536" font-size="10" fill="#9f1239">List&lt;Actividad&gt;  ·  COMPOSICIÓN</text>
+      <text x="340" y="558" font-size="11" fill="#0f172a">[0]</text>
+      <circle cx="500" cy="554" r="5" fill="#9f1239" />
+      <text x="340" y="582" font-size="11" fill="#0f172a">[1]</text>
+      <circle cx="500" cy="578" r="5" fill="#9f1239" />
+      <text x="340" y="606" font-size="9" fill="#9f1239">creadas por evento1.crearActividad</text>
+
+      <!-- Charla con herencia -->
+      <rect x="560" y="488" width="300" height="248" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="2" />
+      <rect x="560" y="488" width="300" height="28" fill="#7c3aed" rx="6" />
+      <rect x="560" y="504" width="300" height="12" fill="#7c3aed" />
+      <text x="710" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Charla  @charla   (1 objeto)</text>
+
+      <rect x="572" y="524" width="276" height="118" rx="4" fill="#f5f3ff" stroke="#7c3aed" />
+      <text x="584" y="542" font-size="10" font-weight="700" fill="#5b21b6">PARTE HEREDADA  «Actividad»</text>
+      <text x="584" y="560" font-size="11" fill="#1e1b4b">id = 1</text>
+      <text x="584" y="576" font-size="11" fill="#1e1b4b">titulo = "Salud"</text>
+      <text x="584" y="592" font-size="11" fill="#1e1b4b">cupoMaximo = 10</text>
+      <text x="584" y="608" font-size="11" fill="#1e1b4b">CUPO_MINIMO = 1</text>
+      <text x="584" y="628" font-size="11" fill="#1e1b4b">inscripciones</text>
+      <circle cx="824" cy="624" r="5" fill="#1d4ed8" />
+
+      <rect x="572" y="650" width="276" height="74" rx="4" fill="#faf5ff" stroke="#a855f7" />
+      <text x="584" y="668" font-size="10" font-weight="700" fill="#6b21a8">PARTE ESPECÍFICA  «Charla»</text>
+      <text x="584" y="688" font-size="11" fill="#1e1b4b">disertante = "Manuel"</text>
+      <text x="584" y="708" font-size="10" fill="#6b21a8">HERENCIA: is-a Actividad</text>
+      <text x="584" y="722" font-size="9" fill="#6b21a8">no hay un objeto Actividad aparte</text>
+
+      <!-- Taller con herencia -->
+      <rect x="888" y="488" width="300" height="248" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="2" />
+      <rect x="888" y="488" width="300" height="28" fill="#7c3aed" rx="6" />
+      <rect x="888" y="504" width="300" height="12" fill="#7c3aed" />
+      <text x="1038" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Taller  @taller   (1 objeto)</text>
+
+      <rect x="900" y="524" width="276" height="118" rx="4" fill="#f5f3ff" stroke="#7c3aed" />
+      <text x="912" y="542" font-size="10" font-weight="700" fill="#5b21b6">PARTE HEREDADA  «Actividad»</text>
+      <text x="912" y="560" font-size="11" fill="#1e1b4b">id = 1</text>
+      <text x="912" y="576" font-size="11" fill="#1e1b4b">titulo = "Tecnologia"</text>
+      <text x="912" y="592" font-size="11" fill="#1e1b4b">cupoMaximo = 15</text>
+      <text x="912" y="608" font-size="11" fill="#1e1b4b">CUPO_MINIMO = 1</text>
+      <text x="912" y="628" font-size="11" fill="#1e1b4b">inscripciones</text>
+      <circle cx="1152" cy="624" r="5" fill="#1d4ed8" />
+
+      <rect x="900" y="650" width="276" height="74" rx="4" fill="#faf5ff" stroke="#a855f7" />
+      <text x="912" y="668" font-size="10" font-weight="700" fill="#6b21a8">PARTE ESPECÍFICA  «Taller»</text>
+      <text x="912" y="688" font-size="11" fill="#1e1b4b">requiereNotebook = false</text>
+      <text x="912" y="708" font-size="10" fill="#6b21a8">HERENCIA: is-a Actividad</text>
+      <text x="912" y="722" font-size="9" fill="#6b21a8">polimorfismo en List&lt;Actividad&gt;</text>
+
+      <!-- Inscripciones Charla -->
+      <rect x="328" y="768" width="210" height="132" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5" />
+      <rect x="328" y="768" width="210" height="26" fill="#1d4ed8" rx="6" />
+      <rect x="328" y="782" width="210" height="12" fill="#1d4ed8" />
+      <text x="433" y="786" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Inscripcion  @ins1</text>
+      <text x="340" y="812" font-size="10" fill="#1e3a8a">fecha = LocalDate.now()</text>
+      <text x="340" y="828" font-size="10" fill="#1e3a8a">estado = "Regular"</text>
+      <text x="340" y="850" font-size="11" fill="#0f172a">estudiante</text>
+      <circle cx="512" cy="846" r="5" fill="#1d4ed8" />
+      <text x="340" y="872" font-size="11" fill="#0f172a">actividad</text>
+      <circle cx="512" cy="868" r="5" fill="#1d4ed8" />
+      <text x="340" y="890" font-size="9" fill="#1d4ed8">Juan P. → Charla</text>
+
+      <rect x="556" y="768" width="210" height="132" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5" />
+      <rect x="556" y="768" width="210" height="26" fill="#1d4ed8" rx="6" />
+      <rect x="556" y="782" width="210" height="12" fill="#1d4ed8" />
+      <text x="661" y="786" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Inscripcion  @ins2</text>
+      <text x="568" y="812" font-size="10" fill="#1e3a8a">fecha = LocalDate.now()</text>
+      <text x="568" y="828" font-size="10" fill="#1e3a8a">estado = "Regular"</text>
+      <text x="568" y="850" font-size="11" fill="#0f172a">estudiante</text>
+      <circle cx="740" cy="846" r="5" fill="#1d4ed8" />
+      <text x="568" y="872" font-size="11" fill="#0f172a">actividad</text>
+      <circle cx="740" cy="868" r="5" fill="#1d4ed8" />
+      <text x="568" y="890" font-size="9" fill="#1d4ed8">Pedro M. → Charla</text>
+
+      <!-- Inscripciones Taller -->
+      <rect x="888" y="768" width="210" height="132" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5" />
+      <rect x="888" y="768" width="210" height="26" fill="#1d4ed8" rx="6" />
+      <rect x="888" y="782" width="210" height="12" fill="#1d4ed8" />
+      <text x="993" y="786" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Inscripcion  @ins3</text>
+      <text x="900" y="812" font-size="10" fill="#1e3a8a">fecha = LocalDate.now()</text>
+      <text x="900" y="828" font-size="10" fill="#1e3a8a">estado = "Regular"</text>
+      <text x="900" y="850" font-size="11" fill="#0f172a">estudiante</text>
+      <circle cx="1072" cy="846" r="5" fill="#1d4ed8" />
+      <text x="900" y="872" font-size="11" fill="#0f172a">actividad</text>
+      <circle cx="1072" cy="868" r="5" fill="#1d4ed8" />
+      <text x="900" y="890" font-size="9" fill="#1d4ed8">Pedro M. → Taller</text>
+
+      <rect x="1116" y="768" width="210" height="132" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5" />
+      <rect x="1116" y="768" width="210" height="26" fill="#1d4ed8" rx="6" />
+      <rect x="1116" y="782" width="210" height="12" fill="#1d4ed8" />
+      <text x="1221" y="786" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Inscripcion  @ins4</text>
+      <text x="1128" y="812" font-size="10" fill="#1e3a8a">fecha = LocalDate.now()</text>
+      <text x="1128" y="828" font-size="10" fill="#1e3a8a">estado = "Regular"</text>
+      <text x="1128" y="850" font-size="11" fill="#0f172a">estudiante</text>
+      <circle cx="1300" cy="846" r="5" fill="#1d4ed8" />
+      <text x="1128" y="872" font-size="11" fill="#0f172a">actividad</text>
+      <circle cx="1300" cy="868" r="5" fill="#1d4ed8" />
+      <text x="1128" y="890" font-size="9" fill="#1d4ed8">Miguel A. → Taller</text>
+
+      <!-- Leyenda -->
+      <rect x="1220" y="92" width="432" height="368" rx="6" fill="#fff" stroke="#1e3a5f" />
+      <text x="1436" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a5f">Leyenda de relaciones</text>
+
+      <line x1="1240" y1="142" x2="1310" y2="142" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" />
+      <text x="1320" y="146" font-size="11" fill="#0f172a">Referencia (variable / campo)</text>
+
+      <line x1="1240" y1="172" x2="1310" y2="172" stroke="#15803d" stroke-width="2.5" stroke-dasharray="7 4" marker-start="url(#diamond-empty)" marker-end="url(#arrow-agg)" />
+      <text x="1320" y="168" font-size="11" font-weight="700" fill="#15803d">Agregación  (todo-parte débil)</text>
+      <text x="1320" y="184" font-size="10" fill="#166534">EventoUniversitario ◆— Sala</text>
+      <text x="1320" y="198" font-size="10" fill="#166534">La Sala vive sin el evento.</text>
+
+      <line x1="1240" y1="228" x2="1310" y2="228" stroke="#9f1239" stroke-width="2.5" marker-start="url(#diamond-filled)" marker-end="url(#arrow-comp)" />
+      <text x="1320" y="224" font-size="11" font-weight="700" fill="#9f1239">Composición  (todo-parte fuerte)</text>
+      <text x="1320" y="240" font-size="10" fill="#9f1239">Evento ◆— Charla / Taller</text>
+      <text x="1320" y="254" font-size="10" fill="#9f1239">Se crean dentro del evento;</text>
+      <text x="1320" y="268" font-size="10" fill="#9f1239">no hay variable local propia.</text>
+
+      <line x1="1240" y1="298" x2="1310" y2="298" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-asoc)" />
+      <text x="1320" y="294" font-size="11" font-weight="700" fill="#1d4ed8">Asociación</text>
+      <text x="1320" y="310" font-size="10" fill="#1e40af">Inscripcion — Estudiante</text>
+      <text x="1320" y="324" font-size="10" fill="#1e40af">Inscripcion — Actividad</text>
+      <text x="1320" y="338" font-size="10" fill="#1e40af">Objetos independientes vinculados.</text>
+
+      <rect x="1240" y="354" width="22" height="22" fill="#f5f3ff" stroke="#7c3aed" />
+      <text x="1272" y="362" font-size="11" font-weight="700" fill="#5b21b6">Herencia  (is-a)</text>
+      <text x="1272" y="378" font-size="10" fill="#5b21b6">Charla y Taller NO son 2 objetos.</text>
+      <text x="1240" y="400" font-size="10" fill="#5b21b6">Cada uno es 1 instancia con parte Actividad + parte propia.</text>
+      <text x="1240" y="416" font-size="10" fill="#5b21b6">List&lt;Actividad&gt; guarda subclases (polimorfismo).</text>
+      <text x="1240" y="440" font-size="10" fill="#334155">Inscripciones: 2 en Charla (Juan, Pedro) y 2 en Taller (Pedro, Miguel).</text>
+
+      <!-- FLECHAS STACK → HEAP -->
+      <line x1="259" y1="188" x2="326" y2="160" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+      <line x1="259" y1="298" x2="326" y2="360" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+      <path d="M 259 408 C 290 408 300 250 318 250 L 718 250 L 718 278" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+
+      <!-- listEst → estudiantes -->
+      <line x1="505" y1="154" x2="558" y2="154" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow)" />
+      <line x1="505" y1="178" x2="766" y2="160" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow)" />
+      <line x1="505" y1="202" x2="974" y2="170" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow)" />
+
+      <!-- evento.sala → Sala  AGREGACIÓN -->
+      <line x1="573" y1="394" x2="718" y2="360" stroke="#15803d" stroke-width="2.4" stroke-dasharray="7 4" marker-start="url(#diamond-empty)" marker-end="url(#arrow-agg)" />
+      <text x="600" y="378" font-size="10" font-weight="700" fill="#15803d">agregación</text>
+
+      <!-- evento.actividades → listAct  COMPOSICIÓN -->
+      <line x1="568" y1="425" x2="460" y2="490" stroke="#9f1239" stroke-width="2.4" marker-start="url(#diamond-filled)" marker-end="url(#arrow-comp)" />
+      <text x="500" y="470" font-size="10" font-weight="700" fill="#9f1239">composición</text>
+
+      <!-- listAct → Charla / Taller -->
+      <line x1="505" y1="554" x2="558" y2="560" stroke="#9f1239" stroke-width="2.2" marker-end="url(#arrow-comp)" />
+      <line x1="505" y1="578" x2="886" y2="580" stroke="#9f1239" stroke-width="2.2" marker-end="url(#arrow-comp)" />
+
+      <!-- Charla.inscripciones → ins1, ins2 -->
+      <path d="M 829 624 C 840 624 840 700 538 700 L 433 700 L 433 766" fill="none" stroke="#1d4ed8" stroke-width="1.6" marker-end="url(#arrow-asoc)" />
+      <line x1="829" y1="624" x2="661" y2="766" stroke="#1d4ed8" stroke-width="1.6" marker-end="url(#arrow-asoc)" />
+
+      <!-- Taller.inscripciones → ins3, ins4 -->
+      <line x1="1157" y1="624" x2="993" y2="766" stroke="#1d4ed8" stroke-width="1.6" marker-end="url(#arrow-asoc)" />
+      <path d="M 1157 624 C 1280 624 1320 700 1221 700 L 1221 766" fill="none" stroke="#1d4ed8" stroke-width="1.6" marker-end="url(#arrow-asoc)" />
+
+      <!-- Inscripcion.estudiante → Estudiantes (asociación hacia arriba) -->
+      <path d="M 512 846 C 200 846 200 70 650 70 L 650 90" fill="none" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arrow-asoc)" />
+      <text x="210" y="86" font-size="9" fill="#1d4ed8">asoc. @ins1→Juan</text>
+
+      <path d="M 740 846 C 760 920 820 250 854 250 L 854 240" fill="none" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arrow-asoc)" />
+      <path d="M 1072 846 C 1080 940 900 250 870 250 L 870 240" fill="none" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arrow-asoc)" />
+      <text x="800" y="258" font-size="9" fill="#1d4ed8">@ins2 y @ins3 → Pedro (misma instancia)</text>
+
+      <path d="M 1300 846 C 1380 846 1380 70 1070 70 L 1070 90" fill="none" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#arrow-asoc)" />
+      <text x="1288" y="86" font-size="9" fill="#1d4ed8">asoc. @ins4→Miguel</text>
+
+      <!-- Inscripcion.actividad → Charla / Taller -->
+      <line x1="512" y1="868" x2="560" y2="720" stroke="#1d4ed8" stroke-width="1.3" marker-end="url(#arrow-asoc)" />
+      <line x1="740" y1="868" x2="710" y2="736" stroke="#1d4ed8" stroke-width="1.3" marker-end="url(#arrow-asoc)" />
+      <line x1="1072" y1="868" x2="1038" y2="736" stroke="#1d4ed8" stroke-width="1.3" marker-end="url(#arrow-asoc)" />
+      <line x1="1300" y1="868" x2="1188" y2="736" stroke="#1d4ed8" stroke-width="1.3" marker-end="url(#arrow-asoc)" />
+
+      <text x="992" y="1055" text-anchor="middle" font-size="11" fill="#1e3a5f">Al finalizar main: 3 Estudiante + 1 EventoUniversitario + 1 Sala + 1 Charla + 1 Taller + 4 Inscripcion (+ ArrayLists). Nada es basura todavía: todo es alcanzable desde el stack.</text>
+    </svg>
+  </div>
+</body>
+</html>
