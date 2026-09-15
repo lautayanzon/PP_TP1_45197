@@ -1,3 +1,7 @@
+package modelo;
+
+import modelo.actividades.Actividad;
+
 import java.time.LocalDate;
 
 public class Inscripcion {
@@ -30,7 +34,7 @@ public class Inscripcion {
         this.estado = estado;
     }
 
-    void mostrarDatos () {
+    public void mostrarDatos() {
         System.out.println("[");
         System.out.println("Fecha:" + this.fecha);
         System.out.println("Estado:" + this.estado);
