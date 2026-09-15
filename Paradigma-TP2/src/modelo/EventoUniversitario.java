@@ -106,7 +106,7 @@ public class EventoUniversitario implements Serializable{
             System.out.println("No se encontro el archivo.");
             return false;
         } catch (IOException e) {
-            System.out.println("Se produjo un error al persistir el evento.");
+            System.out.println("Se produjo un error al persistir el evento: " + e);
             return false;
         }
     }

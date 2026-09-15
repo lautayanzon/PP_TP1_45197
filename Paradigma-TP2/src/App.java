@@ -38,7 +38,7 @@ public class App {
         boolean b = evento1.persistirEvento();
 
         EventoUniversitario evento2 = EventoUniversitario.recuperarEvento("1");
-//        evento2.mostrarDatos();
+        evento2.mostrarDatos();
 
         System.out.println("Cantidad de Eventos: " + EventoUniversitario.getCantidadEventos());
     }
