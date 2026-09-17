@@ -1,4 +1,8 @@
 package excepciones;
 
-public class CupoExcedidoException {
+public class CupoExcedidoException extends Exception{
+
+    public CupoExcedidoException(String message) {
+        super(message);
+    }
 }

@@ -1,3 +1,9 @@
+package modelo.actividades;
+
+import excepciones.CupoExcedidoException;
+import modelo.Estudiante;
+import modelo.Inscripcion;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +22,11 @@ public abstract class Actividad {
         this.id = id;
     }
 
-    Inscripcion inscribir(Estudiante estudiante) {
+    public Inscripcion inscribir(Estudiante estudiante) throws CupoExcedidoException {
+
+        if (inscripciones.size() >= cupoMaximo) {
+            throw new CupoExcedidoException("No se puede inscribir. Cupo maximo: " + cupoMaximo);
+        }
         String estado = "Regular";
         LocalDate date = LocalDate.now();
         Inscripcion inscripcion = new Inscripcion(date, estado, estudiante, this);
@@ -24,7 +34,7 @@ public abstract class Actividad {
         return inscripcion;
     }
 
-    void mostrarInscripciones() {
+    public void mostrarInscripciones() {
         System.out.println("Lista de Inscripciones");
         for (Inscripcion inscripcion : this.inscripciones) {
             inscripcion.mostrarDatos();
@@ -46,7 +56,7 @@ public abstract class Actividad {
 
     @Override
     public String toString() {
-        return "Actividad{" +
+        return "modelo.actividades.Actividad{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
                 ", cupoMaximo=" + cupoMaximo +

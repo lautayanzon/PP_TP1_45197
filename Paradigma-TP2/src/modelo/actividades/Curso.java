@@ -3,27 +3,32 @@ package modelo.actividades;
 import modelo.Estudiante;
 import modelo.certificacion.Certificable;
 
-public class Taller extends Actividad implements Certificable {
+public class Curso extends Actividad implements Certificable {
 
-    private boolean requiereNotebook;
+    private int nivel;
 
-    public Taller(int id, String titulo, int cupoMaximo, boolean requiereNotebook) {
+    public Curso(int id, String titulo, int cupoMaximo, int nivel) {
         super(id, titulo, cupoMaximo);
-        this.requiereNotebook = requiereNotebook;
+        this.nivel = nivel;
     }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
 
     @Override
     public double calcularCostoMateriales() {
-        if (requiereNotebook) {
-            return 5000;
-        } else {
-            return 2000;
-        }
+        return 0;
     }
 
     @Override
     public String getTipo() {
-        return "modelo.actividades.Taller";
+        return "modelo.actividades.Curso";
     }
 
     @Override

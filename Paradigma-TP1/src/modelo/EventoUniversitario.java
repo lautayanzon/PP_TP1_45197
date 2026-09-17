@@ -1,7 +1,12 @@
+package modelo;
+
+import modelo.actividades.*;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventoUniversitario {
+public class EventoUniversitario implements Serializable{
 
     private final String id;
     private String titulo;
@@ -52,16 +57,16 @@ public class EventoUniversitario {
         }
     }
 
-    void asignarSala(Sala sala) {
+    public void asignarSala(Sala sala) {
         this.sala = sala;
     }
 
-    void crearActividad(int id, String titulo, int cupo, String tipo) {
+    public void crearActividad(int id, String titulo, int cupo, String tipo) {
         switch (tipo) {
-            case "Taller":
+            case "modelo.actividades.Taller":
                 this.actividades.add(new Taller(id, titulo, cupo, false));
                 break;
-            case "Charla":
+            case "modelo.actividades.Charla":
                 this.actividades.add(new Charla(id, titulo, cupo, "Manuel"));
                 break;
         }
@@ -71,7 +76,7 @@ public class EventoUniversitario {
         return actividades;
     }
 
-    void mostrarDatos() {
+    public void mostrarDatos() {
         System.out.println("------------");
         System.out.println("Evento " + this.id);
         System.out.println("Titulo: " + this.titulo);
@@ -87,5 +92,38 @@ public class EventoUniversitario {
 
     public static int getCantidadEventos() {
         return cantidadEventos;
+    }
+
+    public boolean persistirEvento() {
+        try {
+            FileOutputStream fos = new FileOutputStream(id + ".dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+            oos.close();
+            fos.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println("No se encontro el archivo.");
+            return false;
+        } catch (IOException e) {
+            System.out.println("Se produjo un error al persistir el evento.");
+            return false;
+        }
+    }
+
+    public static EventoUniversitario recuperarEvento(String id) {
+        EventoUniversitario evento = null;
+        try {
+            FileInputStream fis = new FileInputStream(id + ".dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            evento = (EventoUniversitario) ois.readObject();
+        } catch (FileNotFoundException e) {
+            System.out.println("No se encontro el archivo.");
+        } catch (IOException e) {
+            System.out.println("Se produjo un error de E/S.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error de conversion de clase.");
+        }
+        return evento;
     }
 }

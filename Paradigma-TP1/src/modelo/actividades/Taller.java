@@ -1,4 +1,6 @@
-public class Taller extends Actividad{
+package modelo.actividades;
+
+public class Taller extends Actividad {
 
     private boolean requiereNotebook;
 
@@ -18,6 +20,6 @@ public class Taller extends Actividad{
 
     @Override
     public String getTipo() {
-        return "Taller";
+        return "modelo.actividades.Taller";
     }
 }

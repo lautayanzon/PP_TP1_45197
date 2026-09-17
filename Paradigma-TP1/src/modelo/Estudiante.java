@@ -1,3 +1,5 @@
+package modelo;
+
 public class Estudiante {
 
     private String legajo;
@@ -26,14 +28,14 @@ public class Estudiante {
 
     @Override
     public String toString() {
-        return "Estudiante{" +
+        return "modelo.Estudiante{" +
                 "legajo='" + legajo + '\'' +
                 ", nombre='" + nombre + '\'' +
                 '}';
     }
 
     void mostrarDatos() {
-        System.out.println("Estudiante");
+        System.out.println("modelo.Estudiante");
         System.out.println("[");
         System.out.println("Legajo: " + this.legajo);
         System.out.println("Nombre: " + this.nombre);

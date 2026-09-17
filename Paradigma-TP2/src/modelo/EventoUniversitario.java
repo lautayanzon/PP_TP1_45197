@@ -63,11 +63,14 @@ public class EventoUniversitario implements Serializable{
 
     public void crearActividad(int id, String titulo, int cupo, String tipo) {
         switch (tipo) {
-            case "modelo.actividades.Taller":
+            case "Taller":
                 this.actividades.add(new Taller(id, titulo, cupo, false));
                 break;
-            case "modelo.actividades.Charla":
+            case "Charla":
                 this.actividades.add(new Charla(id, titulo, cupo, "Manuel"));
+                break;
+            case "Curso":
+                this.actividades.add(new Curso(id, titulo, cupo, 1));
                 break;
         }
     }
@@ -92,6 +95,16 @@ public class EventoUniversitario implements Serializable{
 
     public static int getCantidadEventos() {
         return cantidadEventos;
+    }
+
+    public <T extends Actividad> List<T> filtrarActividadesPorTipo (Class<T> tipo) {
+        List<T> resultado = new ArrayList<>();
+        for (Actividad actividad : this.actividades) {
+            if (tipo.isInstance(actividad)) {
+                resultado.add((T) actividad);
+            }
+        }
+        return resultado;
     }
 
     public boolean persistirEvento() {

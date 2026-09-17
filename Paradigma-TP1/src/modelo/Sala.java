@@ -1,3 +1,5 @@
+package modelo;
+
 public class Sala {
 
     private int id;
@@ -26,7 +28,7 @@ public class Sala {
 
     @Override
     public String toString() {
-        return "Sala{" +
+        return "modelo.Sala{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 '}';
